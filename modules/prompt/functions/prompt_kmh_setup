@@ -29,9 +29,21 @@ function prompt_kmh_precmd {
   # Format PWD.
   prompt_kmh_pwd
 
+  # Get CITC name.
+  citc_client_name
+
   # Get Git repository information.
   if (( $+functions[git-info] )); then
     git-info
+  fi
+}
+
+function citc_client_name () {
+  client_name=""
+  local working_dir=`pwd`
+  if [[ $PWD =~ ^$CITC_PATH\/([^\/]+) ]] ; then
+    path_array=(${(ps:/:)${working_dir}})
+    client_name=" ("$path_array[5]")"
   fi
 }
 
@@ -74,6 +86,7 @@ function prompt_kmh_setup {
 
   # Define prompts.
   PROMPT='${SSH_TTY:+"%F{red}%n%f@%F{yellow}%m%f "}%F{cyan}${_prompt_kmh_pwd}%f${git_info:+${(e)git_info[prompt]}}%(!. %B%F{red}#%f%b.)${editor_info[keymap]} '
+  PROMPT='${SSH_TTY:+"%F{red}%n%f@%F{yellow}%m%f "}%F{cyan}${_prompt_kmh_pwd}%F{blue}${client_name}%f${git_info:+${(e)git_info[prompt]}}%(!. %B%F{red}#%f%b.)${editor_info[keymap]} '
   RPROMPT='${editor_info[overwrite]}%(?:: %F{red}⏎%f)${VIM:+" %B%F{green}V%f%b"}${INSIDE_EMACS:+" %B%F{green}E%f%b"}${git_info[rprompt]}'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
