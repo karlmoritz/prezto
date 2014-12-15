@@ -16,6 +16,9 @@ fi
 bindkey "^R" history-incremental-search-backward
 setopt INTERACTIVE_COMMENTS
 
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
 # Source custom RC per machine
 if [[ -s "${ZDOTDIR:-$HOME}/.zshrclocal" ]]; then
   source "${ZDOTDIR:-$HOME}/.zshrclocal"
